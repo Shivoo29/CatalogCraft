@@ -30,7 +30,17 @@ exports.login = async (req, res) => {
     }
 
     const token = user.generateAuthToken();
-    res.send({ message: 'Login successful', token, user });
+    // Return 'access' key for frontend compatibility
+    res.send({ message: 'Login successful', access: token, token, user });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+};
+
+// Logout user (stateless JWT - client discards token)
+exports.logout = async (req, res) => {
+  try {
+    res.status(200).send({ message: 'Logout successful' });
   } catch (error) {
     res.status(500).send({ error: error.message });
   }

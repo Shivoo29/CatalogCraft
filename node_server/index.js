@@ -8,7 +8,7 @@ const start = async () => {
   // Dynamically import AdminJS and @adminjs/mongoose
   const { default: AdminJS } = await import('adminjs');
   const AdminJSMongoose = await import('@adminjs/mongoose');
-  const { buildRouter } = await import('@adminjs/express');
+  const { buildRouter } = require('@adminjs/express');
 
   // Import User and Post models
   const User = require('./src/users/models/user'); // Ensure this path is correct

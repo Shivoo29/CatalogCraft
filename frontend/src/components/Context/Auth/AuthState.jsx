@@ -12,7 +12,7 @@ const AuthState = (props) => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get('http://panel.mait.ac.in:8012/auth/user-details/', {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/auth/user-details`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
             'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ const AuthState = (props) => {
 
   const logout = async () => {
     try {
-      await axios.post('http://panel.mait.ac.in:8012/auth/logout/', {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/logout`, {
         refresh_token: localStorage.getItem('refreshToken'),
       }, {
         headers: {

@@ -38,7 +38,7 @@ const BulkData = () => {
             });
             localStorage.setItem('bulkUploadResponse', JSON.stringify(response.data));
             setAlert(true);
-            if (url === 'http://panel.mait.ac.in:8012/catalogue/upload-catalogue/') {
+            if (url.includes('/catalogue/upload-catalogue')) {
                 navigate('/bulk-data-show');
             } else {
                 navigate('/my-cata');
@@ -60,7 +60,7 @@ const BulkData = () => {
                 <li>Hit upload and edit the fields that were left blank.</li>
             </ol>
             <a href="/path/to/demo/file.xlsx" download className="text-blue-600 underline mb-4 block">Download Demo File</a>
-            <form onSubmit={(e) => handleSubmit(e, 'http://panel.mait.ac.in:8012/catalogue/upload-catalogue/', setShowAlert)}>
+            <form onSubmit={(e) => handleSubmit(e, `${import.meta.env.VITE_BACKEND_URL}/catalogue/upload-catalogue`, setShowAlert)}>
                 <div className="mb-4">
                     <Input
                         type="file"
@@ -94,7 +94,7 @@ const BulkData = () => {
                 Please adhere to the given template for instant catalog creation:
             </Typography>
             <a href="ONDC_Sample_Data2.xlsx" download className="text-blue-600 underline mb-4 block">Download Demo File</a>
-            <form onSubmit={(e) => handleSubmit(e, 'http://panel.mait.ac.in:8012/catalogue/upload-save-catalogue/', setSecondShowAlert)}>
+            <form onSubmit={(e) => handleSubmit(e, `${import.meta.env.VITE_BACKEND_URL}/catalogue/upload-save-catalogue`, setSecondShowAlert)}>
                 <div className="mb-4">
                     <Input
                         type="file"

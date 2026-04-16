@@ -8,7 +8,7 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     // Fetch the user details from your API
-    axios.get('http://panel.mait.ac.in:8012/auth/user-details/', {
+    axios.get(`${import.meta.env.VITE_BACKEND_URL}/auth/user-details`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
         'Content-Type': 'application/json',

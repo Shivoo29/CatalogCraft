@@ -10,7 +10,7 @@ function Dashboard() {
 
     useEffect(() => {
         // Fetch the user details from your API
-        axios.get('http://panel.mait.ac.in:8012/auth/user-details/', {
+        axios.get(`${import.meta.env.VITE_BACKEND_URL}/auth/user-details`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`, // Add the token to the 'Authorization' header
                 'Content-Type': 'application/json', // Adjust headers as needed
@@ -20,7 +20,7 @@ function Dashboard() {
                 // Assuming the API response contains user data
                 setUser(response.data);
                 // Fetch the catalogues of the logged-in user
-                return axios.get('http://panel.mait.ac.in:8012/catalogue/get/', {
+                return axios.get(`${import.meta.env.VITE_BACKEND_URL}/catalogue/get`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ function Dashboard() {
                                 {catalogues.slice(0, 5).map((catalogue) => (
                                     <div key={catalogue.id} className="mb-4 border-[1px] rounded border-black shadow p-5">
                                         <img 
-                                            src={`http://panel.mait.ac.in:8012${catalogue.product_image_1}`} 
+                                            src={`${import.meta.env.VITE_BACKEND_URL}${catalogue.product_image_1}`} 
                                             alt={`${catalogue.name} image`} 
                                             className="w-32 object-cover mb-2 rounded"
                                         />
