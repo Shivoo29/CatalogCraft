@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Card, CardBody, Typography, Button } from "@material-tailwind/react";
+import { Typography, Button } from "@material-tailwind/react";
 
 function Services() {
   return (
@@ -18,8 +18,7 @@ function Services() {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
-          <Card className="lux-panel">
-            <CardBody>
+          <div className="lux-panel p-6">
               <Typography variant="h5" className="mb-2 font-bold text-white">
                 Catalogue Digitization
               </Typography>
@@ -27,11 +26,9 @@ function Services() {
                 Upload templates, match products, and generate structured
                 catalogues with consistent fields.
               </Typography>
-            </CardBody>
-          </Card>
+          </div>
 
-          <Card className="lux-panel">
-            <CardBody>
+          <div className="lux-panel p-6">
               <Typography variant="h5" className="mb-2 font-bold text-white">
                 Image-based Similarity
               </Typography>
@@ -39,11 +36,9 @@ function Services() {
                 Leverage similarity search to speed up product mapping and
                 reduce manual work.
               </Typography>
-            </CardBody>
-          </Card>
+          </div>
 
-          <Card className="lux-panel">
-            <CardBody>
+          <div className="lux-panel p-6">
               <Typography variant="h5" className="mb-2 font-bold text-white">
                 Seller Workflows
               </Typography>
@@ -51,11 +46,9 @@ function Services() {
                 Add products, manage inventory, and keep seller catalogues
                 updated in a clear dashboard experience.
               </Typography>
-            </CardBody>
-          </Card>
+          </div>
 
-          <Card className="lux-panel">
-            <CardBody>
+          <div className="lux-panel p-6">
               <Typography variant="h5" className="mb-2 font-bold text-white">
                 Admin + Templates
               </Typography>
@@ -63,13 +56,12 @@ function Services() {
                 Maintain templates and mapping rules with a dedicated admin
                 interface.
               </Typography>
-            </CardBody>
-          </Card>
+          </div>
         </div>
 
         <div className="mt-10 flex justify-center gap-3">
           <Button
-            className="rounded-full bg-blue-600 px-8"
+            className="rounded-full bg-[#ff5a1f] px-8 shadow-[0_10px_30px_rgba(255,90,31,0.35)] hover:shadow-[0_18px_60px_rgba(255,90,31,0.25)]"
             as={Link}
             to="/catalogs"
           >

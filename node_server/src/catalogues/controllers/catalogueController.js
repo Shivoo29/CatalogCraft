@@ -397,6 +397,96 @@ exports.uploadCatalogue = async (req, res) => {
   }
 };
 
+// Download an Excel template for bulk upload
+exports.downloadBulkTemplate = async (req, res) => {
+  try {
+    const templateType = String(req.query?.type || 'preview').toLowerCase();
+
+    const baseHeaders = [
+      'name',
+      'description',
+      'brand',
+      'color',
+      'size',
+      'price',
+      'gst_percentage',
+      'ean',
+      'standardized',
+      'category',
+      'product_image_1',
+      'product_image_2',
+      'product_image_3',
+      'product_image_4',
+      'product_image_5',
+    ];
+
+    const headers =
+      templateType === 'save'
+        ? [...baseHeaders, 'seller_sku', 'selling_price', 'quantity']
+        : baseHeaders;
+
+    const exampleRow =
+      templateType === 'save'
+        ? {
+            name: 'Sample Product Name',
+            description: 'Short product description (optional)',
+            brand: 'Brand (optional)',
+            color: 'Black',
+            size: 'M',
+            price: 999,
+            gst_percentage: '18',
+            ean: '8901234567890',
+            standardized: true,
+            category: 'Imported Products',
+            product_image_1: 'image1.jpg',
+            product_image_2: '',
+            product_image_3: '',
+            product_image_4: '',
+            product_image_5: '',
+            seller_sku: 'SKU_123',
+            selling_price: 899,
+            quantity: 10,
+          }
+        : {
+            name: 'Sample Product Name',
+            description: 'Short product description (optional)',
+            brand: 'Brand (optional)',
+            color: 'Black',
+            size: 'M',
+            price: 999,
+            gst_percentage: '18',
+            ean: '8901234567890',
+            standardized: true,
+            category: 'Imported Products',
+            product_image_1: 'image1.jpg',
+            product_image_2: '',
+            product_image_3: '',
+            product_image_4: '',
+            product_image_5: '',
+          };
+
+    // Create workbook
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet([exampleRow], { header: headers });
+    XLSX.utils.book_append_sheet(wb, ws, 'Template');
+
+    const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
+    const filename =
+      templateType === 'save'
+        ? 'catalogcraft-bulk-template-save.xlsx'
+        : 'catalogcraft-bulk-template-preview.xlsx';
+
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    return res.status(200).send(buffer);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 // Upload and save catalogue from Excel + ZIP
 exports.uploadAndSaveCatalogue = async (req, res) => {
   try {

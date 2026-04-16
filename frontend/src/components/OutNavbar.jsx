@@ -225,7 +225,7 @@ export function NavbarWithMegaMenu() {
             </Button>
           </Link>
           <Link to="/signup">
-            <Button size="sm" className="rounded-full bg-blue-600 px-5 shadow-[0_10px_30px_rgba(37,99,235,0.35)]">
+            <Button size="sm" className="rounded-full bg-[#b91c1c] px-5 shadow-[0_10px_30px_rgba(127,29,29,0.35)]">
               Book Demo
             </Button>
           </Link>
@@ -252,13 +252,13 @@ export function NavbarWithMegaMenu() {
             </Button>
           </Link>
           <Link to="/signup" className="w-full">
-            <Button size="sm" fullWidth className="rounded-full bg-blue-600">
+            <Button size="sm" fullWidth className="rounded-full bg-[#b91c1c]">
               Book Demo
             </Button>
           </Link>
         </div>
         <div className="mt-3 flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-slate-300">
-          <ArrowRightIcon className="h-4 w-4 text-blue-400" />
+          <ArrowRightIcon className="h-4 w-4 text-[#ff5a1f]" />
           Catalog digitization, product enrichment, and portfolio-grade storefronts.
         </div>
       </Collapse>

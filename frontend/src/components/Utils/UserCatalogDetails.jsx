@@ -133,7 +133,7 @@ function UserCatalogCard() {
               HSN Code: <span className="font-semibold">{catalog.hsn_code}</span>
             </Typography>
             <Typography variant="body1" color="gray">
-              GST Percentage: <span className="font-semibold text-blue-600">{catalog.gst_percentage}</span>
+              GST Percentage: <span className="font-semibold text-[#ff5a1f]">{catalog.gst_percentage}</span>
             </Typography>
             <Typography variant="body1" color="gray">
               Unit: <span className="font-semibold">{catalog.unit}</span>

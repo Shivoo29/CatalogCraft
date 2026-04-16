@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { ArrowRightIcon, BoltIcon, ChartBarSquareIcon, SparklesIcon } from "@heroicons/react/24/outline";
-import heroVisual from "../assets/bg1_digi-transparent.png";
+import heroVisual from "../assets/Gemini_Generated_Image_5le7ip5le7ip5le7.png";
 import step1 from "../assets/step1.jpg";
 import step2 from "../assets/step2.jpg";
 import step3 from "../assets/step3.jpg";
@@ -144,12 +144,14 @@ function Home() {
               </div>
             </div>
             <div className="lux-panel-soft p-6">
-              <div className="mb-5 overflow-hidden rounded-[22px] border border-white/10 bg-black/20">
-                <img
-                  src={heroVisual}
-                  alt="CatalogCraft premium platform preview"
-                  className="h-48 w-full object-cover"
-                />
+              <div className="mb-5 overflow-hidden rounded-[22px] border border-white/10 bg-black/30">
+                <div className="aspect-[16/10] w-full">
+                  <img
+                    src={heroVisual}
+                    alt="CatalogCraft premium platform preview"
+                    className="h-full w-full object-contain"
+                  />
+                </div>
               </div>
               <p className="text-sm uppercase tracking-[0.26em] text-slate-500">
                 Top categories
@@ -158,7 +160,7 @@ function Home() {
                 {topCategories.map(([name, count]) => (
                   <div key={name} className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
                     <span className="text-sm font-medium text-slate-200">{name}</span>
-                    <span className="text-sm text-blue-300">{count} items</span>
+                    <span className="text-sm text-red-300">{count} items</span>
                   </div>
                 ))}
               </div>
@@ -169,8 +171,8 @@ function Home() {
         <section className="mt-8 lux-grid md:grid-cols-3">
           {features.map(({ title, body, icon: Icon, className }) => (
             <div key={title} className={`lux-panel p-6 ${className}`}>
-              <div className="mb-5 inline-flex rounded-2xl border border-blue-400/20 bg-blue-500/10 p-3">
-                <Icon className="h-6 w-6 text-blue-300" />
+              <div className="mb-5 inline-flex rounded-2xl border border-red-800/25 bg-red-900/20 p-3">
+                <Icon className="h-6 w-6 text-red-300" />
               </div>
               <h2 className="text-2xl font-semibold tracking-[-0.04em] text-white">{title}</h2>
               <p className="mt-3 text-sm leading-7 text-slate-300">{body}</p>
@@ -186,7 +188,7 @@ function Home() {
                 Curated visuals for the landing page. Real products deeper in the journey.
               </h2>
             </div>
-            <Link to="/catalogs" className="inline-flex items-center gap-2 text-sm font-medium text-blue-300">
+            <Link to="/catalogs" className="inline-flex items-center gap-2 text-sm font-medium text-[#ff5a1f]">
               Explore live catalogue
               <ArrowRightIcon className="h-4 w-4" />
             </Link>
@@ -198,12 +200,16 @@ function Home() {
                 key={item.title}
                 className={`lux-panel overflow-hidden p-4 ${item.className}`}
               >
-                <div className="overflow-hidden rounded-[24px] border border-white/10">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="h-72 w-full object-cover transition-transform duration-500 hover:scale-[1.03]"
-                  />
+                <div className="overflow-hidden rounded-[24px] border border-white/10 bg-black/30">
+                  <div className="relative aspect-[16/9] w-full max-h-[340px]">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      loading="lazy"
+                      className="absolute inset-0 h-full w-full object-contain"
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(127,29,29,0.25),transparent_55%),linear-gradient(180deg,rgba(0,0,0,0.2),rgba(0,0,0,0.55))]" />
+                  </div>
                 </div>
                 <div className="px-2 pb-2 pt-5">
                   <h3 className="text-2xl font-semibold tracking-[-0.04em] text-white">

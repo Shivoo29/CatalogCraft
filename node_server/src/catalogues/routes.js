@@ -26,6 +26,7 @@ router.get('/template-catalogues/:template_name', catalogueController.getTemplat
 router.get('/search-catalogues', catalogueController.searchCatalogues);
 router.get('/templates', catalogueController.getAllTemplates);
 router.get('/lookup/:ean', catalogueController.eanLookup);
+router.get('/bulk-template', catalogueController.downloadBulkTemplate);
 router.post(
   '/upload-catalogue',
   upload.fields([{ name: 'excel_file', maxCount: 1 }, { name: 'zip_file', maxCount: 1 }]),

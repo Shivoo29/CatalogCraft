@@ -7,6 +7,7 @@ import {
   CheckBadgeIcon,
   ShieldCheckIcon,
 } from '@heroicons/react/24/outline';
+import { formatINR } from '../utils/currency';
 
 function Catalogue() {
   const { id } = useParams();
@@ -139,7 +140,7 @@ function Catalogue() {
                   onClick={() => setActiveImageIndex(index)}
                   className={`overflow-hidden rounded-2xl border p-1 transition-all ${
                     activeImageIndex === index
-                      ? 'border-blue-400/50 bg-blue-500/10'
+                      ? 'border-[#ff5a1f]/50 bg-[#ff5a1f]/10'
                       : 'border-white/10 bg-white/[0.03]'
                   }`}
                 >
@@ -167,11 +168,11 @@ function Catalogue() {
                   </Typography>
                   <div className="mt-4 flex items-end gap-4">
                     <Typography className="text-4xl font-semibold tracking-[-0.04em] text-white">
-                      {catalog.selling_price ? `$${catalog.selling_price}` : 'Price on request'}
+                      {catalog.selling_price ? formatINR(catalog.selling_price) : 'Price on request'}
                     </Typography>
                     {catalog.mrp ? (
                       <Typography className="pb-1 text-base text-slate-500 line-through">
-                        ${catalog.mrp}
+                        {formatINR(catalog.mrp)}
                       </Typography>
                     ) : null}
                   </div>
@@ -197,7 +198,7 @@ function Catalogue() {
               </div>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                <Button className="rounded-full bg-blue-600 px-6 shadow-[0_10px_30px_rgba(37,99,235,0.35)]">
+                <Button className="rounded-full bg-[#ff5a1f] px-6 shadow-[0_10px_30px_rgba(255,90,31,0.35)]">
                   Contact sales
                 </Button>
                 <Button
@@ -212,7 +213,7 @@ function Catalogue() {
 
             <div className="grid gap-5 md:grid-cols-2">
               <div className="lux-panel p-6">
-                <div className="mb-4 inline-flex rounded-2xl border border-blue-400/20 bg-blue-500/10 p-3 text-blue-300">
+                <div className="mb-4 inline-flex rounded-2xl border border-[#ff5a1f]/20 bg-[#ff5a1f]/10 p-3 text-[#ff5a1f]">
                   <ShieldCheckIcon className="h-6 w-6" />
                 </div>
                 <Typography className="text-xl font-semibold tracking-[-0.03em] text-white">

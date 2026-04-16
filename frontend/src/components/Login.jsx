@@ -75,12 +75,12 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <Button type='submit' className="mt-6 rounded-full bg-blue-600" fullWidth>
+        <Button type='submit' className="mt-6 rounded-full bg-[#ff5a1f]" fullWidth>
          Log In
         </Button>
         <Typography className="mt-4 text-center text-sm text-slate-400">
           New here?{" "}
-          <Link to="/signup" className="font-medium text-blue-300">
+          <Link to="/signup" className="font-medium text-[#ff5a1f]">
             Book a demo
           </Link>
         </Typography>

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom'; // Import Link from React Router
 import { EcommerceCard } from './Utils/EcommerceCard';
 import { Spinner } from '@material-tailwind/react';
+import { formatINR } from '../utils/currency';
 
 function Catalogs() {
   const [catalogsByCategory, setCatalogsByCategory] = useState({});
@@ -92,7 +93,7 @@ function Catalogs() {
                   <EcommerceCard
                     imageUrl={imageUrl}
                     productName={catalog.product_name}
-                    price={`${catalog.selling_price ?? ""}`}
+                    price={formatINR(catalog.selling_price)}
                     description={catalog.description || `MRP: ${catalog.mrp}`}
                   />
                 </Link>

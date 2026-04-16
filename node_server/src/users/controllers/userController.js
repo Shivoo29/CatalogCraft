@@ -10,7 +10,15 @@ exports.register = async (req, res) => {
     const user = await User.createUser(email, password, name, number, role);
     res.status(201).send({ message: 'User registered successfully', user });
   } catch (error) {
-    res.status(400).send({ error: error.message });
+    const rawMessage = error?.message || 'Registration failed';
+    // Mongo duplicate key (unique email) -> return a clean, user-friendly response.
+    if (error?.code === 11000 || rawMessage.includes('E11000')) {
+      return res
+        .status(409)
+        .send({ error: 'Email is already registered. Please sign in.' });
+    }
+
+    return res.status(400).send({ error: rawMessage });
   }
 };
 

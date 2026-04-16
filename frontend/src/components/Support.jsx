@@ -25,20 +25,20 @@ function Support() {
               </Typography>
               <ul className="space-y-2 text-slate-300">
                 <li>
-                  <Link to="/help" className="text-blue-300 hover:underline">
+                  <Link to="/help" className="text-[#ff5a1f] hover:underline">
                     Help Center
                   </Link>
                 </li>
                 <li>
                   <Link
                     to="/product-search"
-                    className="text-blue-300 hover:underline"
+                    className="text-[#ff5a1f] hover:underline"
                   >
                     Search Products
                   </Link>
                 </li>
                 <li>
-                  <Link to="/bulk-data" className="text-blue-300 hover:underline">
+                  <Link to="/bulk-data" className="text-[#ff5a1f] hover:underline">
                     Bulk Upload
                   </Link>
                 </li>
@@ -77,7 +77,7 @@ function Support() {
               </div>
 
               <div className="mt-5 flex gap-3 flex-wrap">
-                <Button as={Link} to="/help" className="rounded-full bg-blue-600">
+                <Button as={Link} to="/help" className="rounded-full bg-[#ff5a1f]">
                   Go to Help Center
                 </Button>
                 <Button as={Link} to="/catalogs" variant="outlined" color="white" className="rounded-full border-white/20 text-slate-100">

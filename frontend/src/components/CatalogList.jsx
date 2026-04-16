@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'; // Import Link from React Router
 import { EcommerceCard } from './Utils/EcommerceCard';
+import { formatINR } from '../utils/currency';
 
 
 function CatalogList() {
@@ -63,7 +64,7 @@ function CatalogList() {
                   <EcommerceCard
                     imageUrl={imageUrl}
                     productName={catalog.product_name}
-                    price={`${catalog.selling_price ?? ""}`}
+                    price={formatINR(catalog.selling_price)}
                     description={catalog.description || `MRP: ${catalog.mrp}`}
                   />
                 </Link>

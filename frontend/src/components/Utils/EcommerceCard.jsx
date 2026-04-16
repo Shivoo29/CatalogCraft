@@ -3,6 +3,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
+import { formatINR } from "../../utils/currency";
 
 export function EcommerceCard({ imageUrl, productName, price, description, ean }) {
   const safeName = productName || "Product";
@@ -11,9 +12,9 @@ export function EcommerceCard({ imageUrl, productName, price, description, ean }
   )}`;
 
   return (
-    <Card className="group h-full overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.04] shadow-[0_18px_55px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/30 hover:bg-white/[0.06]">
+    <Card className="group h-full overflow-hidden rounded-[28px] border border-red-900/25 bg-white/[0.04] shadow-[0_18px_55px_rgba(0,0,0,0.45)] transition-all duration-300 hover:-translate-y-1 hover:border-[#ef4444]/35 hover:bg-white/[0.06]">
       <div className="p-4">
-        <div className="relative overflow-hidden rounded-[24px] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(37,99,235,0.14),transparent_40%),linear-gradient(180deg,rgba(15,23,42,0.92),rgba(2,6,23,0.95))]">
+        <div className="relative overflow-hidden rounded-[24px] border border-red-900/20 bg-[radial-gradient(circle_at_top,rgba(127,29,29,0.22),transparent_42%),linear-gradient(180deg,rgba(11,11,11,0.96),rgba(7,7,7,0.98))]">
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),transparent)]" />
           <div className="flex aspect-[4/3] items-center justify-center p-6">
             <img
@@ -39,7 +40,7 @@ export function EcommerceCard({ imageUrl, productName, price, description, ean }
                 {ean ? `EAN ${ean}` : "Imported premium catalogue item"}
               </Typography>
             </div>
-            <div className="rounded-full border border-white/10 bg-white/5 p-2 text-white transition-colors duration-200 group-hover:border-blue-400/40 group-hover:bg-blue-500/10">
+            <div className="rounded-full border border-white/10 bg-white/5 p-2 text-white transition-colors duration-200 group-hover:border-[#ef4444]/40 group-hover:bg-[#7f1d1d]/20">
               <ArrowUpRightIcon className="h-4 w-4" />
             </div>
           </div>
@@ -49,11 +50,11 @@ export function EcommerceCard({ imageUrl, productName, price, description, ean }
           </Typography>
 
           <div className="mt-4 flex items-center justify-between">
-            <span className="rounded-full border border-blue-400/20 bg-blue-500/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.24em] text-blue-200">
+            <span className="rounded-full border border-red-800/30 bg-red-900/20 px-3 py-1 text-xs font-medium uppercase tracking-[0.24em] text-red-200">
               View catalogue
             </span>
             <Typography className="text-base font-semibold text-white">
-              {price ? `$${price}` : "Discover"}
+              {price ? formatINR(price) : "Discover"}
             </Typography>
           </div>
         </div>

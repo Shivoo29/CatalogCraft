@@ -36,7 +36,6 @@ function Signup() {
         error?.message ||
         'Signup failed. Please try again.';
       setErrorMsg(message);
-      alert(message);
     } finally {
       setLoading(false);
     }
@@ -121,7 +120,7 @@ function Signup() {
         </div>
         <Button
           type="submit"
-          className="mt-6 rounded-full bg-blue-600"
+          className="mt-6 rounded-full bg-[#ff5a1f]"
           fullWidth
           disabled={loading}
         >
@@ -132,7 +131,7 @@ function Signup() {
         ) : null}
         <Typography className="mt-4 text-center font-normal text-slate-400">
           Already have an account?{" "}
-          <Link to="/login" className="font-medium text-blue-300">
+          <Link to="/login" className="font-medium text-[#ff5a1f]">
             Sign In
           </Link>
         </Typography>

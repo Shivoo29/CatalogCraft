@@ -58,7 +58,7 @@ function AboutUs() {
 
         <div className="mt-10 flex justify-center gap-3">
           <Button
-            className="rounded-full bg-blue-600 px-8"
+            className="rounded-full bg-[#ff5a1f] px-8 shadow-[0_10px_30px_rgba(255,90,31,0.35)] hover:shadow-[0_18px_60px_rgba(255,90,31,0.25)]"
             as={Link}
             to="/catalogs"
           >
