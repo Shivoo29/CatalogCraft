@@ -39,10 +39,12 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-ip": "^1.0.4",
+    "express-session": "^1.18.1",
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^8.4.0",
     "multer": "^2.1.1",
+    "nodemailer": "^6.10.1",
     "xlsx": "^0.18.5"
   }
 }
