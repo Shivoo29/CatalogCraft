@@ -99,6 +99,9 @@ exports.createCatalogue = async (req, res) => {
 // Get all catalogues
 exports.getAllCatalogues = async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(200).json([]);
+    }
     const catalogues = await Catalogue.find().populate('category');
     res.status(200).json(catalogues);
   } catch (error) {
@@ -109,6 +112,9 @@ exports.getAllCatalogues = async (req, res) => {
 // Get all categories
 exports.getAllCategories = async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(200).json({ categories: [] });
+    }
     const categories = await Category.find().select('category');
     res.status(200).json({ categories });
   } catch (error) {

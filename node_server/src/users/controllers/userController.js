@@ -2,9 +2,15 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../../../config');
+const mongoose = require('../../../services/mongoose');
+
+const isDbConnected = () => mongoose.connection.readyState === 1;
 
 // Register new user
 exports.register = async (req, res) => {
+  if (!isDbConnected()) {
+    return res.status(503).send({ error: 'Database is unavailable. Please try again shortly.' });
+  }
   try {
     const { email, password, name, number, role } = req.body;
     const user = await User.createUser(email, password, name, number, role);
@@ -24,6 +30,9 @@ exports.register = async (req, res) => {
 
 // Login user
 exports.login = async (req, res) => {
+  if (!isDbConnected()) {
+    return res.status(503).send({ error: 'Database is unavailable. Please try again shortly.' });
+  }
   const { email, password } = req.body;
 
   try {
@@ -56,6 +65,9 @@ exports.logout = async (req, res) => {
 
 // Get user profile
 exports.profile = async (req, res) => {
+  if (!isDbConnected()) {
+    return res.status(503).send({ error: 'Database is unavailable. Please try again shortly.' });
+  }
   try {
     const user = await User.findById(req.user._id).select('-password');
     if (!user) {

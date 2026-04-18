@@ -10,7 +10,10 @@ const PORT = process.env.PORT || config.port;
 const isProd = process.env.NODE_ENV === 'production';
 
 const start = async () => {
-  await connectDB();
+  const dbConnected = await connectDB();
+  if (!dbConnected) {
+    console.warn('Running API without MongoDB connection. Set dbUrlMongoDB to enable DB-backed features.');
+  }
 
   const sessionSecret = process.env.SESSION_SECRET || (!isProd ? 'dev-insecure-session-secret' : '');
   if (!sessionSecret) {
@@ -85,4 +88,7 @@ const start = async () => {
   });
 };
 
-start();
+start().catch((err) => {
+  console.error('Failed to start server:', err);
+  process.exit(1);
+});

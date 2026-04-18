@@ -1,6 +1,7 @@
 require('dotenv').config();
 const mongoose = require('./services/mongoose');
 const bcrypt = require('bcryptjs');
+const config = require('./config');
 
 const User = require('./src/users/models/user');
 const Category = require('./src/catalogues/models/categories');
@@ -8,7 +9,11 @@ const Catalogue = require('./src/catalogues/models/catalogue');
 const SellerCatalogue = require('./src/catalogues/models/sellerCatalogue');
 
 async function seed() {
-  await new Promise((resolve) => mongoose.connection.once('open', resolve));
+  if (!config.dbUrlMongoDB) {
+    throw new Error('Missing dbUrlMongoDB in .env');
+  }
+
+  await mongoose.connect(config.dbUrlMongoDB);
   console.log('Connected. Seeding...');
 
   // Wipe existing data

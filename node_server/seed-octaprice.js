@@ -4,6 +4,7 @@ const path = require('path');
 const AdmZip = require('adm-zip');
 const XLSX = require('xlsx');
 const bcrypt = require('bcryptjs');
+const config = require('./config');
 
 const mongoose = require('./services/mongoose');
 const User = require('./src/users/models/user');
@@ -78,12 +79,23 @@ function extractCategoryName(row) {
 }
 
 function extractImageUrls(row) {
-  const parsed = safeJsonParse(row.imageUrls, []);
-  if (!Array.isArray(parsed)) {
-    return [];
+  const sources = [];
+
+  const imageUrls = safeJsonParse(row.imageUrls, []);
+  if (Array.isArray(imageUrls)) {
+    sources.push(...imageUrls);
   }
 
-  return parsed
+  const images = safeJsonParse(row.images, []);
+  if (Array.isArray(images)) {
+    sources.push(...images);
+  }
+
+  if (typeof row.mainImageUrl === 'string' && row.mainImageUrl.trim()) {
+    sources.push(row.mainImageUrl.trim());
+  }
+
+  return sources
     .filter((value) => typeof value === 'string' && value.trim())
     .slice(0, 5);
 }
@@ -279,6 +291,12 @@ async function seedFromDataset(options) {
 
 async function main() {
   const options = parseArgs(process.argv.slice(2));
+  if (!config.dbUrlMongoDB) {
+    throw new Error('Missing dbUrlMongoDB in .env');
+  }
+  if (mongoose.connection.readyState === 0) {
+    await mongoose.connect(config.dbUrlMongoDB);
+  }
   await seedFromDataset(options);
   await mongoose.connection.close();
 }
