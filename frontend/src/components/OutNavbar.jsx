@@ -213,12 +213,12 @@ export function NavbarWithMegaMenu() {
               Premium Catalog OS
             </span>
           </Link>
-          <Translator />
         </div>
         <div className="hidden lg:block">
           <NavList />
         </div>
-        <div className="hidden gap-2 lg:flex">
+        <div className="hidden items-center gap-2 lg:flex">
+          <Translator />
           <Link to="/login">
             <Button variant="text" size="sm" className="rounded-full px-5 text-slate-100">
               Log In

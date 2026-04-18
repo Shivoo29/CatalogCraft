@@ -14,12 +14,21 @@ function Home() {
   const url = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
+    const normalizeCatalogs = (payload) => {
+      if (Array.isArray(payload)) return payload;
+      if (Array.isArray(payload?.catalogues)) return payload.catalogues;
+      if (Array.isArray(payload?.data)) return payload.data;
+      if (Array.isArray(payload?.results)) return payload.results;
+      return [];
+    };
+
     const fetchCatalogs = async () => {
       try {
         const response = await axios.get(`${url}/catalogue/get-all`);
-        setCatalogs(response.data || []);
+        setCatalogs(normalizeCatalogs(response.data));
       } catch (error) {
         console.error("Error fetching home catalogues:", error);
+        setCatalogs([]);
       } finally {
         setLoading(false);
       }
@@ -47,26 +56,26 @@ function Home() {
   const metrics = [
     { label: "Imported SKUs", value: `${catalogs.length}+` },
     { label: "Live categories", value: `${topCategories.length || 4}` },
-    { label: "Faster launch", value: "10x" },
-    { label: "Premium UX", value: "24/7" },
+    { label: "Digitization modes", value: "Text/Voice/Image" },
+    { label: "Backend options", value: "Django + Node" },
   ];
 
   const features = [
     {
-      title: "Catalog digitization at enterprise speed",
-      body: "Standardize titles, descriptions, pricing, and media into one polished product surface.",
+      title: "Solve process inefficiency at scale",
+      body: "Digitize large catalogues with 1000+ SKUs faster using streamlined workflows instead of manual, repetitive data entry.",
       icon: BoltIcon,
       className: "md:col-span-2",
     },
     {
-      title: "Investor-ready product storytelling",
-      body: "Move from raw data to a storefront that looks credible in demos, screenshots, and board decks.",
+      title: "Fix catalog integrity and consistency",
+      body: "Improve image quality, data accuracy, and taxonomy adherence while reducing standardization gaps across listings.",
       icon: SparklesIcon,
       className: "",
     },
     {
-      title: "Operational clarity",
-      body: "Create a premium front-end for product teams, sellers, and catalog ops without sacrificing scale.",
+      title: "Reduce UX friction for sellers",
+      body: "Cut multiple clicks and handoffs with intuitive text, voice, and image-assisted catalogue workflows.",
       icon: ChartBarSquareIcon,
       className: "",
     },
@@ -74,26 +83,26 @@ function Home() {
 
   const landingShowcase = [
     {
-      title: "Premium seller onboarding",
-      body: "Guide teams from scattered product inputs into a structured luxury storefront.",
+      title: "Barcode + voice assisted onboarding",
+      body: "Start with barcode scanning, then enrich fields using voice input (including Indic language use cases).",
       image: step1,
       className: "md:col-span-2",
     },
     {
-      title: "One-click digitization",
-      body: "Upload, enrich, and standardize product data faster with cleaner workflows.",
+      title: "Vector image search and mapping",
+      body: "Use image-based matching to map items to a master catalogue and auto-fill maximum product data.",
       image: step2,
       className: "",
     },
     {
-      title: "Operational control",
-      body: "Track catalog quality, content consistency, and presentation across the platform.",
+      title: "Bulk and instant catalogue creation",
+      body: "Support both standardized and non-standardized products with templates, bulk upload, and instant creation flows.",
       image: step3,
       className: "",
     },
     {
-      title: "Investor-ready storyboards",
-      body: "Use high-quality visual storytelling on the landing page while the live catalog powers discovery deeper in the product.",
+      title: "Multilingual and analytics-ready",
+      body: "Deliver multilingual support, chatbot guidance, and downloadable reporting analytics for operational visibility.",
       image: workflow,
       className: "md:col-span-2",
     },
@@ -104,22 +113,22 @@ function Home() {
       <div className="lux-container pt-10">
         <section className="lux-grid md:grid-cols-[1.25fr_0.85fr]">
           <div className="lux-panel-highlight p-8 md:p-10">
-            <span className="lux-chip">Premium commerce infrastructure</span>
+            <span className="lux-chip">Catalogue Digitization by Team Progmatic</span>
             <h1 className="lux-heading mt-6 max-w-3xl">
-              A dark-luxury catalog platform for modern product companies.
+              Digitize and enhance product catalogues with text, voice, and image workflows.
             </h1>
             <p className="lux-subheading mt-6 max-w-2xl">
-              CatalogCraft turns fragmented product data into a premium storefront
-              and structured operating layer for sellers, commerce teams, and demos
-              that need to impress instantly.
+              CatalogCraft is built for Bharat use cases where seller apps need a
+              user-friendly way to process large catalogues with rich attributes,
+              better consistency, and faster publishing.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/catalogs" className="lux-button-primary">
-                Explore products
+                Explore catalogues
               </Link>
               <Link to="/signup" className="lux-button-secondary">
-                Book a walkthrough
+                Start digitizing
               </Link>
             </div>
 
@@ -136,11 +145,11 @@ function Home() {
           <div className="lux-grid">
             <div className="lux-panel p-6">
               <p className="text-sm uppercase tracking-[0.26em] text-slate-500">
-                Why it feels premium
+                Problem we solve
               </p>
               <div className="mt-4 space-y-4 text-sm leading-7 text-slate-300">
-                <p>Dark-luxury surfaces, strong hierarchy, sharp spacing, and product-first storytelling.</p>
-                <p>Designed to work as both a polished company site and a modern ecommerce experience.</p>
+                <p>Manual catalogue operations are time inefficient and lead to process redundancy for sellers.</p>
+                <p>Multiple steps, inconsistent standards, and quality gaps create catalog integrity and CX pain points.</p>
               </div>
             </div>
             <div className="lux-panel-soft p-6">
@@ -185,11 +194,11 @@ function Home() {
             <div>
               <span className="lux-chip">Visual showcase</span>
               <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-white md:text-5xl">
-                Curated visuals for the landing page. Real products deeper in the journey.
+                Deliverables built for real catalogue operations.
               </h2>
             </div>
             <Link to="/catalogs" className="inline-flex items-center gap-2 text-sm font-medium text-[#ff5a1f]">
-              Explore live catalogue
+              View live catalogue
               <ArrowRightIcon className="h-4 w-4" />
             </Link>
           </div>
@@ -227,20 +236,20 @@ function Home() {
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
                 <p className="text-sm uppercase tracking-[0.26em] text-slate-500">
-                  Live catalogue
+                  Solution
                 </p>
                 <h3 className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-white md:text-3xl">
-                  The landing page stays curated. The product catalogue stays real.
+                  One platform for standardization, speed, and multilingual catalogue digitization.
                 </h3>
               </div>
               <Link to="/catalogs" className="lux-button-primary">
-                Browse live products
+                Browse catalogues
               </Link>
             </div>
             <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">
-              This gives you the best of both worlds: strong first-impression visuals
-              for investors and a real data-driven commerce experience once someone
-              enters the catalog.
+              From barcode scanning and voice input to vector search, templates,
+              and dual backend support, CatalogCraft helps teams digitize faster
+              while improving consistency, quality, and seller experience.
             </p>
           </div>
         </section>

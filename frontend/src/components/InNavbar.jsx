@@ -196,7 +196,6 @@ export function ComplexNavbar() {
           <span className="text-[11px] uppercase tracking-[0.28em] text-slate-400">
             Premium Catalog OS
           </span>
-          <Translator />
         </Typography>
         <div className="hidden lg:block">
           <NavList />
@@ -211,6 +210,9 @@ export function ComplexNavbar() {
           <Bars2Icon className="h-6 w-6" />
         </IconButton>
 
+        <div className="hidden lg:block">
+          <Translator />
+        </div>
         <ProfileMenu />
         <Button
           size="sm"
