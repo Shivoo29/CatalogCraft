@@ -312,7 +312,11 @@ exports.deleteSellerCatalogue = async (req, res) => {
 // EAN barcode lookup via barcodespider API
 exports.eanLookup = async (req, res) => {
   const { ean } = req.params;
-  const apiUrl = `https://api.barcodespider.com/v1/lookup?token=3cb93207e05597b307ba&upc=${ean}`;
+  const barcodeSpiderToken = process.env.BARCODESPIDER_API_TOKEN;
+  if (!barcodeSpiderToken) {
+    return res.status(500).json({ error: 'Barcode lookup is not configured.' });
+  }
+  const apiUrl = `https://api.barcodespider.com/v1/lookup?token=${encodeURIComponent(barcodeSpiderToken)}&upc=${ean}`;
 
   https.get(apiUrl, (apiRes) => {
     let data = '';
