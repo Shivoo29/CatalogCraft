@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Card,
   Typography,
@@ -7,9 +8,8 @@ import { formatINR } from "../../utils/currency";
 
 export function EcommerceCard({ imageUrl, productName, price, description, ean }) {
   const safeName = productName || "Product";
-  const fallbackImage = `https://source.unsplash.com/featured/600x400?${encodeURIComponent(
-    safeName
-  )}`;
+  const [imageFailed, setImageFailed] = useState(false);
+  const hasImage = Boolean(imageUrl) && !imageFailed;
 
   return (
     <Card className="group h-full overflow-hidden rounded-[28px] border border-red-900/25 bg-white/[0.04] shadow-[0_18px_55px_rgba(0,0,0,0.45)] transition-all duration-300 hover:-translate-y-1 hover:border-[#ef4444]/35 hover:bg-white/[0.06]">
@@ -17,16 +17,19 @@ export function EcommerceCard({ imageUrl, productName, price, description, ean }
         <div className="relative overflow-hidden rounded-[24px] border border-red-900/20 bg-[radial-gradient(circle_at_top,rgba(127,29,29,0.22),transparent_42%),linear-gradient(180deg,rgba(11,11,11,0.96),rgba(7,7,7,0.98))]">
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),transparent)]" />
           <div className="flex aspect-[4/3] items-center justify-center p-6">
-            <img
-              src={imageUrl || fallbackImage}
-              alt={safeName}
-              loading="lazy"
-              className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]"
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = fallbackImage;
-              }}
-            />
+            {hasImage ? (
+              <img
+                src={imageUrl}
+                alt={safeName}
+                loading="lazy"
+                className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]"
+                onError={() => setImageFailed(true)}
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] text-center text-xs uppercase tracking-[0.2em] text-slate-400">
+                No Product Image
+              </div>
+            )}
           </div>
         </div>
 

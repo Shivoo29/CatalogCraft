@@ -7,12 +7,27 @@ function Dashboard() {
     const [user, setUser] = useState(null);
     const [catalogues, setCatalogues] = useState([]);
     const [loading, setLoading] = useState(true);
+    const backendUrl = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:3018').replace(/\/$/, '');
 
     useEffect(() => {
+        const normalizeCatalogues = (payload) => {
+            if (Array.isArray(payload)) return payload;
+            if (Array.isArray(payload?.catalogues)) return payload.catalogues;
+            if (Array.isArray(payload?.data)) return payload.data;
+            if (Array.isArray(payload?.results)) return payload.results;
+            return [];
+        };
+
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+            setLoading(false);
+            return;
+        }
+
         // Fetch the user details from your API
-        axios.get(`${import.meta.env.VITE_BACKEND_URL}/auth/user-details`, {
+        axios.get(`${backendUrl}/auth/user-details`, {
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`, // Add the token to the 'Authorization' header
+                'Authorization': `Bearer ${token}`, // Add the token to the 'Authorization' header
                 'Content-Type': 'application/json', // Adjust headers as needed
             }
         })
@@ -20,22 +35,22 @@ function Dashboard() {
                 // Assuming the API response contains user data
                 setUser(response.data);
                 // Fetch the catalogues of the logged-in user
-                return axios.get(`${import.meta.env.VITE_BACKEND_URL}/catalogue/get`, {
+                return axios.get(`${backendUrl}/catalogue/get`, {
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                     }
                 });
             })
             .then((response) => {
-                setCatalogues(response.data);
+                setCatalogues(normalizeCatalogues(response.data));
                 setLoading(false);
             })
             .catch((error) => {
                 console.error('Error fetching data:', error);
                 setLoading(false);
             });
-    }, []);
+    }, [backendUrl]);
 
     return (
         <div className="lux-shell">
@@ -53,10 +68,10 @@ function Dashboard() {
                             </Typography>
                         </CardHeader>
                         <CardBody>
-                            <Typography variant="h6">Email:<span className='!font-normal text-white'> {user.email}</span></Typography>
-                            <Typography variant="h6">Name: <span className='!font-normal text-white'>{user.name}</span></Typography>
+                            <Typography variant="h6">Email:<span className='!font-normal text-white'> {user?.email || '-'}</span></Typography>
+                            <Typography variant="h6">Name: <span className='!font-normal text-white'>{user?.name || '-'}</span></Typography>
                             {/* <Typography variant="h6">Number<span className='!font-normal text-black'>: {user.number}</Typography> */}
-                            <Typography variant="h6">Role: <span className='!font-normal text-white'>{user.role}</span></Typography>
+                            <Typography variant="h6">Role: <span className='!font-normal text-white'>{user?.role || '-'}</span></Typography>
                         </CardBody>
                     </Card>
 
@@ -103,12 +118,21 @@ function Dashboard() {
                             </CardHeader>
                             <CardBody>
                                 {catalogues.slice(0, 5).map((catalogue) => (
-                                    <div key={catalogue.id} className="mb-4 border border-white/10 rounded-xl bg-white/[0.03] shadow-[0_18px_60px_rgba(0,0,0,0.25)] p-5">
-                                        <img 
-                                            src={`${import.meta.env.VITE_BACKEND_URL}${catalogue.product_image_1}`} 
-                                            alt={`${catalogue.name} image`} 
-                                            className="w-32 object-cover mb-2 rounded-lg"
-                                        />
+                                    <div key={catalogue.id || catalogue._id} className="mb-4 border border-white/10 rounded-xl bg-white/[0.03] shadow-[0_18px_60px_rgba(0,0,0,0.25)] p-5">
+                                        {catalogue.product_image_1 ? (
+                                            <img
+                                                src={String(catalogue.product_image_1).startsWith('http') ? catalogue.product_image_1 : `${backendUrl}${catalogue.product_image_1}`}
+                                                alt={`${catalogue.name} image`}
+                                                className="w-32 h-24 object-cover mb-2 rounded-lg"
+                                                onError={(e) => {
+                                                    e.currentTarget.style.display = 'none';
+                                                }}
+                                            />
+                                        ) : (
+                                            <div className="mb-2 flex h-24 w-32 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-center text-[10px] uppercase tracking-[0.2em] text-slate-400">
+                                                No image
+                                            </div>
+                                        )}
                                         <Typography variant="h6" className="font-bold text-white">{catalogue.product_name}</Typography>
                                         <Typography variant="body2" className="text-slate-300">{catalogue.description}</Typography>
                                     </div>

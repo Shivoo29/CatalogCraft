@@ -7,11 +7,12 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const backendUrl = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:3018').replace(/\/$/, '');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, {
+      const response = await axios.post(`${backendUrl}/auth/login`, {
         email,
         password,
       });

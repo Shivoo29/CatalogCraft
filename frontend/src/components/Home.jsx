@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
+import * as THREE from "three";
 import { Link } from "react-router-dom";
 import { ArrowRightIcon, BoltIcon, ChartBarSquareIcon, SparklesIcon } from "@heroicons/react/24/outline";
 import heroVisual from "../assets/Gemini_Generated_Image_5le7ip5le7ip5le7.png";
@@ -37,6 +38,52 @@ function Home() {
     fetchCatalogs();
   }, [url]);
 
+  useEffect(() => {
+    const cards = Array.from(document.querySelectorAll(".offer-card"));
+    const cleanups = [];
+
+    cards.forEach((card) => {
+      let targetRotateX = 0;
+      let targetRotateY = 0;
+      let currentRotateX = 0;
+      let currentRotateY = 0;
+      let rafId = 0;
+
+      const animate = () => {
+        currentRotateX = THREE.MathUtils.lerp(currentRotateX, targetRotateX, 0.12);
+        currentRotateY = THREE.MathUtils.lerp(currentRotateY, targetRotateY, 0.12);
+        card.style.transform = `perspective(1000px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(0)`;
+        rafId = window.requestAnimationFrame(animate);
+      };
+
+      const onMove = (event) => {
+        const rect = card.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width;
+        const y = (event.clientY - rect.top) / rect.height;
+        targetRotateY = (x - 0.5) * 10;
+        targetRotateX = (0.5 - y) * 8;
+      };
+
+      const onLeave = () => {
+        targetRotateX = 0;
+        targetRotateY = 0;
+      };
+
+      card.addEventListener("mousemove", onMove);
+      card.addEventListener("mouseleave", onLeave);
+      animate();
+
+      cleanups.push(() => {
+        card.removeEventListener("mousemove", onMove);
+        card.removeEventListener("mouseleave", onLeave);
+        window.cancelAnimationFrame(rafId);
+        card.style.transform = "";
+      });
+    });
+
+    return () => cleanups.forEach((cleanup) => cleanup());
+  }, []);
+
   const topCategories = useMemo(() => {
     const counts = {};
     catalogs.forEach((catalog) => {
@@ -56,8 +103,8 @@ function Home() {
   const metrics = [
     { label: "Imported SKUs", value: `${catalogs.length}+` },
     { label: "Live categories", value: `${topCategories.length || 4}` },
-    { label: "Digitization modes", value: "Text/Voice/Image" },
-    { label: "Backend options", value: "Django + Node" },
+    { label: "Digitization modes", value: "Text | Voice | Image", compact: true },
+    { label: "Backend options", value: "Django + Node", compact: true },
   ];
 
   const features = [
@@ -79,6 +126,40 @@ function Home() {
       icon: ChartBarSquareIcon,
       className: "",
     },
+  ];
+
+  const offers = [
+    {
+      title: "Barcode Scanning",
+      body: "Scan and identify products quickly to start catalogue creation with minimal manual effort.",
+    },
+    {
+      title: "Voice + Indic Input",
+      body: "Capture product details through voice and text workflows, including Indic language scenarios.",
+    },
+    {
+      title: "Vector Image Search",
+      body: "Match product images against catalogue data and prefill fields from existing references.",
+    },
+    {
+      title: "Bulk Data Addition",
+      body: "Upload large product sets, apply templates, and create catalogues instantly at scale.",
+    },
+    {
+      title: "Taxonomy + Standardization",
+      body: "Improve consistency through mapped categories, standardized attributes, and cleaner listings.",
+    },
+    {
+      title: "Multilingual + Analytics",
+      body: "Support multilingual experiences and export reports for better operational visibility.",
+    },
+  ];
+  const offerIcons = [BoltIcon, SparklesIcon, ChartBarSquareIcon];
+  const capabilityFallback = [
+    "Barcode scanning",
+    "Voice + Indic input",
+    "Vector image search",
+    "Bulk catalogue creation",
   ];
 
   const landingShowcase = [
@@ -135,7 +216,7 @@ function Home() {
             <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
               {metrics.map((metric) => (
                 <div key={metric.label} className="rounded-[22px] border border-white/10 bg-black/15 p-4">
-                  <p className="lux-metric">{metric.value}</p>
+                  <p className={`lux-metric ${metric.compact ? "text-xl sm:text-2xl" : ""}`}>{metric.value}</p>
                   <p className="mt-1 text-sm text-slate-400">{metric.label}</p>
                 </div>
               ))}
@@ -163,15 +244,23 @@ function Home() {
                 </div>
               </div>
               <p className="text-sm uppercase tracking-[0.26em] text-slate-500">
-                Top categories
+                {topCategories.length ? "Top categories" : "Platform capabilities"}
               </p>
               <div className="mt-5 space-y-3">
-                {topCategories.map(([name, count]) => (
-                  <div key={name} className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                    <span className="text-sm font-medium text-slate-200">{name}</span>
-                    <span className="text-sm text-red-300">{count} items</span>
-                  </div>
-                ))}
+                {topCategories.length ? (
+                  topCategories.map(([name, count]) => (
+                    <div key={name} className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
+                      <span className="text-sm font-medium text-slate-200">{name}</span>
+                      <span className="text-sm text-red-300">{count} items</span>
+                    </div>
+                  ))
+                ) : (
+                  capabilityFallback.map((item) => (
+                    <div key={item} className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-slate-200">
+                      {item}
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>
@@ -187,6 +276,37 @@ function Home() {
               <p className="mt-3 text-sm leading-7 text-slate-300">{body}</p>
             </div>
           ))}
+        </section>
+
+        <section className="mt-10">
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <span className="lux-chip">What this site offers</span>
+              <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-white md:text-4xl">
+                Everything needed to digitize catalogues in one place.
+              </h2>
+            </div>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {offers.map((offer, index) => {
+              const Icon = offerIcons[index % offerIcons.length];
+              return (
+                <div
+                  key={offer.title}
+                  className="offer-card lux-panel p-5"
+                  style={{ animationDelay: `${index * 120}ms` }}
+                >
+                  <div className="mb-4 inline-flex rounded-2xl border border-red-800/25 bg-red-900/20 p-3">
+                    <Icon className="h-5 w-5 text-red-300" />
+                  </div>
+                  <h3 className="text-xl font-semibold tracking-[-0.03em] text-white">
+                    {offer.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-7 text-slate-300">{offer.body}</p>
+                </div>
+              );
+            })}
+          </div>
         </section>
 
         <section className="mt-20">

@@ -7,14 +7,23 @@ import { formatINR } from '../utils/currency';
 
 function Catalogs() {
   const [catalogsByCategory, setCatalogsByCategory] = useState({});
+  const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(true); // Add loading state
-  const url = import.meta.env.VITE_BACKEND_URL;
+  const url = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:3018').replace(/\/$/, '');
 
   useEffect(() => {
+    const normalizeCatalogs = (payload) => {
+      if (Array.isArray(payload)) return payload;
+      if (Array.isArray(payload?.catalogues)) return payload.catalogues;
+      if (Array.isArray(payload?.data)) return payload.data;
+      if (Array.isArray(payload?.results)) return payload.results;
+      return [];
+    };
+
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/catalogue/get-all`);
-        const catalogs = response.data;
+        const response = await axios.get(`${url}/catalogue/get-all`);
+        const catalogs = normalizeCatalogs(response.data);
 
         // Group catalogs by category
         const catalogsGroupedByCategory = {};
@@ -35,13 +44,14 @@ function Catalogs() {
         setCatalogsByCategory(catalogsGroupedByCategory);
       } catch (error) {
         console.error('Error fetching catalogs:', error);
+        setErrorMessage('Unable to load catalogues right now. Please check backend connection and try again.');
       } finally {
         setLoading(false); // Set loading to false after fetching data
       }
     };
 
     fetchData();
-  }, []);
+  }, [url]);
 
   if (loading) {
     return (
@@ -67,6 +77,14 @@ function Catalogs() {
 
         <div className="mt-10 space-y-10">
       <h2 className="text-sm uppercase tracking-[0.26em] text-slate-500">Catalogs by Category</h2>
+      {errorMessage ? (
+        <div className="lux-panel p-6 text-sm text-rose-200">{errorMessage}</div>
+      ) : null}
+      {!errorMessage && Object.keys(catalogsByCategory).length === 0 ? (
+        <div className="lux-panel p-6 text-sm text-slate-300">
+          No catalogues found yet. Add catalogue data to see products here.
+        </div>
+      ) : null}
       {Object.entries(catalogsByCategory).map(([category, catalogs]) => (
         <section key={category} className="lux-panel p-6 md:p-8">
           <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">

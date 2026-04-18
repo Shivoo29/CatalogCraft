@@ -117,6 +117,28 @@
             transform: scaleY(0.35);
         }
     }
+
+    @keyframes offerRise {
+        0% {
+            opacity: 0;
+            transform: translateY(14px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+}
+
+.offer-card {
+    opacity: 0;
+    animation: offerRise 450ms ease forwards;
+    will-change: transform;
+    transform-style: preserve-3d;
+}
+.offer-card:hover {
+    box-shadow: 0 20px 55px rgba(127, 29, 29, 0.28);
 }
 
 .google-translate-widget {

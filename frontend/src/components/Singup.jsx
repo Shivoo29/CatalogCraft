@@ -12,12 +12,13 @@ function Signup() {
   const [errorMsg, setErrorMsg] = useState('');
   // const [role, setRole] = useState('SELLER');
   const navigate = useNavigate();
+  const backendUrl = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:3018').replace(/\/$/, '');
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
     setLoading(true);
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/register`, {
+      const response = await axios.post(`${backendUrl}/auth/register`, {
         email,
         password,
         name,
